@@ -11,7 +11,7 @@ public class whacamole {
     int boardWidth = 600;
     int boardHeight = 650;//Took 50px extra for the text on top 
     
-    JFrame frame = new JFrame("Whack A Chicken !");//Title of the game
+    JFrame frame = new JFrame("whacamole!");//Title of the game
     JLabel textLabel = new JLabel();//For the text
     JPanel textPanel = new JPanel();//Panel for the text
     JPanel boardPanel = new JPanel();//Panel for the game
