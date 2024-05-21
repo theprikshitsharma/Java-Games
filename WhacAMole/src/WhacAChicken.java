@@ -19,6 +19,7 @@ public class WhacAChicken {
     JButton[] board = new JButton[9];//To keep track of 9 buttons
     ImageIcon ChickenIcon;//Image 1 for the chicken
     ImageIcon tntIcon;//Image 2 for the deadly tnt
+    ImageIcon specialItemIcon;//Image 3 for the special item
 
     JButton currChickenTile;//Stores current chicken tile
     List<JButton> currTntTiles = new ArrayList<>(); // Store current TNT tiles
@@ -57,6 +58,10 @@ public class WhacAChicken {
         Image chickenImg = new ImageIcon(getClass().getResource("./chicken.png")).getImage();
         ChickenIcon = new ImageIcon(chickenImg.getScaledInstance(150, 150, java.awt.Image.SCALE_SMOOTH));
 
+        Image specialItemImg = new ImageIcon(getClass().getResource("./1.png")).getImage();
+        specialItemIcon = new ImageIcon(specialItemImg.getScaledInstance(150, 150, Image.SCALE_SMOOTH));
+
+
 
         //For loop to create 9 buttons
         for (int i = 0; i < 9; i++) {
@@ -70,11 +75,17 @@ public class WhacAChicken {
                 public void actionPerformed(ActionEvent e) {
                     JButton tile = (JButton) e.getSource();
                     if (tile == currChickenTile) {
-                        score += 10;
-                        textLabel.setText("Score: " + Integer.toString(score));
+                        if (tile.getIcon() == specialItemIcon) {
+                            score += 50; // Increase score by 50 for special item
+                        } else {
+                            score += 10; // Increase score by 10 for chicken
+                        }
+                        textLabel.setText("Score: " + score);
+                        tile.setIcon(null);
+                        currChickenTile = null;
                     }
                     else if (currTntTiles.contains(tile)) {
-		                textLabel.setText("Game Over: " + Integer.toString(score));
+                        textLabel.setText("Game Over: " + score);
                         setChickenTimer.stop();
                         setTntTimer.stop();
                         for (JButton button : board) {
@@ -84,30 +95,36 @@ public class WhacAChicken {
                 }
             });
 	}
-    
-        setChickenTimer = new Timer(550, new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                if (currChickenTile != null) {
-                    currChickenTile.setIcon(null);
-                    currChickenTile = null;
-                }
-        
-                // Find available tiles
-                List<JButton> availableTiles = new ArrayList<>();
-                for (JButton tile : board) {
-                    if (!currTntTiles.contains(tile)) {
-                        availableTiles.add(tile);
+                setChickenTimer = new Timer(550, new ActionListener() {
+                public void actionPerformed(ActionEvent e) {
+                    if (currChickenTile != null) {
+                        currChickenTile.setIcon(null);
+                        currChickenTile = null;
+                    }
+            
+                    // Find available tiles
+                    List<JButton> availableTiles = new ArrayList<>();
+                    for (JButton tile : board) {
+                        if (!currTntTiles.contains(tile)) {
+                            availableTiles.add(tile);
+                        }
+                    }
+            
+                    // Place chicken on a random available tile
+                    if (!availableTiles.isEmpty()) {
+                        int num = random.nextInt(availableTiles.size());
+                        currChickenTile = availableTiles.get(num);
+            
+                        // Determine if a special item should appear
+                        if (random.nextInt(3) == 0) { // 1 in 3 chance for special item
+                            currChickenTile.setIcon(specialItemIcon);
+                        } else {
+                            currChickenTile.setIcon(ChickenIcon);
+                        }
                     }
                 }
-        
-                // Place chicken on a random available tile
-                if (!availableTiles.isEmpty()) {
-                    int num = random.nextInt(availableTiles.size());
-                    currChickenTile = availableTiles.get(num);
-                    currChickenTile.setIcon(ChickenIcon);
-                }
-            }
-        });
+            });
+    
 
             //Setting tnt timer here
             setTntTimer = new Timer(750, new ActionListener() {
