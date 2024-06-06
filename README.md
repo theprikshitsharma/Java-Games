@@ -8,13 +8,11 @@ I spent a bunch of my free time coding these games. They might be simple, but ea
 ## What's Inside?
 - **Whack A Mole:** Smash those moles fast! Stay sharp!
 - **Tic-Tac-Toe:** The classic game we all know and love.
-- **Pong:** A simple two-player game with paddles and a ball.
-- **Memory Game:** Flip cards and find the matching pairs.
 - And more...
 
 ## How to Run
 1. Clone the repo: `git clone https://github.com/theprikshit/Java-Games.git`
 2. Open the project in your favorite IDE (like IntelliJ or Eclipse).
-3. Run the main class of the game you want to play.
+3. Run the App.java of the game you want to play.
 
 ---
