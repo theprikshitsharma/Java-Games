@@ -2,7 +2,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class TicTacToe {
+public class crosscircleclash {
     int boardWidth = 600;
     int boardHeight = 650; //50px for the text panel on top
 
@@ -19,7 +19,7 @@ public class TicTacToe {
     boolean gameOver = false;
     int turns = 0;
 
-    TicTacToe() {
+    crosscircleclash() {
         frame.setVisible(true);
         frame.setSize(boardWidth, boardHeight);
         frame.setLocationRelativeTo(null);
@@ -42,6 +42,8 @@ public class TicTacToe {
         boardPanel.setBackground(Color.darkGray);
         frame.add(boardPanel);
 
+       
+
         for (int r = 0; r < 3; r++) {
             for (int c = 0; c < 3; c++) {
                 JButton tile = new JButton();
@@ -56,7 +58,11 @@ public class TicTacToe {
 
                 tile.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        if (gameOver) return;
+                        if (gameOver) {
+                            restartGame();
+                            return;
+                        }
+
                         JButton tile = (JButton) e.getSource();
                         if (tile.getText() == "") {
                             tile.setText(currentPlayer);
@@ -97,8 +103,8 @@ public class TicTacToe {
                 board[1][c].getText() == board[2][c].getText()) {
                 for (int i = 0; i < 3; i++) {
                     setWinner(board[i][c]);
-                }
-                gameOver = true;
+                }        
+                gameOver = true;               
                 return;
             }
         }
@@ -145,5 +151,33 @@ public class TicTacToe {
         tile.setForeground(Color.orange);
         tile.setBackground(Color.gray);
         textLabel.setText("Tie!");
+    }
+     void restartGame() {   
+        boardPanel.removeAll(); 
+        boardPanel.revalidate();
+        boardPanel.repaint();
+        
+        textPanel.removeAll(); 
+        textPanel.revalidate();
+        textPanel.repaint();
+        
+        JPanel panel = new JPanel(new BorderLayout());
+        JButton button = new JButton(" Restart ? ");
+
+        Font currentFont = button.getFont();
+        Font newFont = currentFont.deriveFont(36.0f); // Set font size to 24
+        button.setFont(newFont);
+
+        button.setBackground(Color.darkGray);
+        button.setForeground(Color.green);
+        panel.add(button, BorderLayout.CENTER);
+        frame.add(panel);
+        frame.setVisible(true);
+        button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               new crosscircleclash();
+            }
+        });
     }
 }
